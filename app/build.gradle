@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.siemens.citypulse.androidapp"
+        applicationId "com.nicholasgot.citypulse.androidapp"
         minSdkVersion 21
         targetSdkVersion 22
         multiDexEnabled true

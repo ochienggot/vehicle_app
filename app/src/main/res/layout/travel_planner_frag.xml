@@ -92,13 +92,11 @@
         android:ems="14"
         android:hint="@string/default_current_location_text"
         android:inputType="textPostalAddress">
-        <!--android:layout_toRightOf="@android:id/list">-->
-        <!--android:layout_below="@+id/carButton"-->
 
         <requestFocus />
     </EditText>
 
-    <com.siemens.citypulse.androidapp.autocompletetext.CustomAutoCompleteTextView
+    <com.nicholasgot.citypulse.androidapp.autocompletetext.CustomAutoCompleteTextView
         android:id="@+id/travelPlannerEndPointTextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.siemens.citypulse.androidapp"
+    package="com.nicholasgot.citypulse.androidapp"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -28,7 +28,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.nicholasgot.citypulse.androidapp.MainActivity"
             >
             <!--android:icon="@drawable/ericsson_logo"-->
             <!--android:label="" >-->
@@ -39,19 +39,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ParkingPlaceConstraintsActivity"
+            android:name="com.nicholasgot.citypulse.androidapp.ParkingPlaceConstraintsActivity"
             android:icon="@drawable/ericsson_logo"
             android:label=""
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.nicholasgot.citypulse.androidapp.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.siemens.citypulse.androidapp.MainActivity" />
+                android:value="com.nicholasgot.citypulse.androidapp.MainActivity" />
         </activity>
 
         <!-- developer -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAhRuNPv5Hna7akelUvQF8ns3yMrSoNOaw" />
+            android:value="AIzaSyDwPt-0G1Q8w2Y9Vysd-1KY2qxAhqno5ys" />
         
         <!-- release -->
         <!--meta-data
@@ -63,33 +63,33 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".TravelPlannerConstraintsActivity"
+            android:name="com.nicholasgot.citypulse.androidapp.TravelPlannerConstraintsActivity"
             android:icon="@drawable/project_icon"
             android:label="" >
         </activity>
         
         <activity
-            android:name=".ErrorPanel"
+            android:name="com.nicholasgot.citypulse.androidapp.ErrorPanel"
             android:icon="@drawable/project_icon"
             android:label="" >
         </activity>
 
-        <service android:name=".ParkingNotificationService" />
-        <service android:name=".TravelNotificationService" />
-         <service android:name=".TravelStatusService" />
+        <service android:name="com.nicholasgot.citypulse.androidapp.ParkingNotificationService" />
+        <service android:name="com.nicholasgot.citypulse.androidapp.TravelNotificationService" />
+         <service android:name="com.nicholasgot.citypulse.androidapp.TravelStatusService" />
 
         <activity
-            android:name=".TravelPlannerRouteSelection"
+            android:name="com.nicholasgot.citypulse.androidapp.TravelPlannerRouteSelection"
             android:icon="@drawable/project_icon"
             android:label="" >
         </activity>
         <activity
-            android:name=".Execution"
+            android:name="com.nicholasgot.citypulse.androidapp.Execution"
             android:icon="@drawable/project_icon"
             android:label="" >
         </activity>
         <activity
-            android:name=".ParkingPlaceSelectionActivity"
+            android:name="com.nicholasgot.citypulse.androidapp.ParkingPlaceSelectionActivity"
             android:icon="@drawable/project_icon"
             android:label="" >
         </activity>
