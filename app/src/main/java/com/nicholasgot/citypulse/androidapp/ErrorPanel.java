@@ -19,8 +19,5 @@ public class ErrorPanel extends Activity{
 		Intent intent = getIntent();
 		
 		errorTextField.setText(intent.getStringExtra("Error"));
-	
-	
 	}
-
 }

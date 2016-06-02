@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -125,17 +124,10 @@ public class TravelPlannerActivity extends ListFragment implements
 
 	private Marker userPositionMarker;
 
-	private Button carButton;
-	private Button walkButton;
-	private Button bicycleButton;
-
     private TextView mNextPickupPoint;
 
 	private Boolean locationAvailable;
     private boolean mFromDriver = false;
-
-	final static int BUTTON_SELECTED_COLOR = Color.CYAN;
-	final static int BUTTON_NOT_SELECTED_COLOR = Color.BLACK;
 
 	final static int PLACES = 0;
 	final static int PLACES_DETAILS = 1;
@@ -147,7 +139,6 @@ public class TravelPlannerActivity extends ListFragment implements
 	private BroadcastReceiver broadcastReceiver;
 	private Bundle requestBundle = null;
 
-//    private static LatLng[] mTraveler_locations = new LatLng[10];
     private static Map<LatLng, String> mTravelerLocations = new Hashtable<>();
     private static ArrayList<String> pickupPoints = new ArrayList<>();
     private static LatLng mLocation;
@@ -615,7 +606,7 @@ public class TravelPlannerActivity extends ListFragment implements
 
 	}
 
-    // TODO: change from Async to OKHTTP, put on seperate class, but what are the dangers of AsyncTask?
+    // TODO: change from Async to OKHTTP?
     private class SendMessageToServer extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -703,7 +694,7 @@ public class TravelPlannerActivity extends ListFragment implements
 				if (routeReasoningResponse.equals("{\"answers\":[]}")) {
 					System.out.println("true");
 				} else {
-					System.out.println("fale");
+					System.out.println("false");
 
 					intent.putExtra(Execution.EXECUTION_DETAILS, requestBundle);
 					startActivity(intent);
@@ -732,7 +723,6 @@ public class TravelPlannerActivity extends ListFragment implements
 					.title("my position")
 					.icon(BitmapDescriptorFactory
 							.fromResource(R.drawable.user_position_marker)));
-
 
             // ADDED: set text in next location to visit
             // TODO: When location changes, check the distance between the current user position and the next location
@@ -1158,6 +1148,10 @@ public class TravelPlannerActivity extends ListFragment implements
 		}
 	}
 
+    /**
+     * Extract lat/lng pair from json response and update the locations HashMap
+     * @param responseData from the REST server API
+     */
     public static void getLocationFromJson(String responseData) {
         try {
             JSONObject jsonObject = new JSONObject(responseData);
@@ -1165,15 +1159,14 @@ public class TravelPlannerActivity extends ListFragment implements
             JSONArray jsonArray = jsonArray1.getJSONArray(0);
 
             if (jsonArray != null) {
-                Double lat = 0.0;
-                Double lng = 0.0;
+                Double lat;
+                Double lng;
                 int len = jsonArray.length();
                 for (int i = 0; i < len; i++) {
                     String[] loc = jsonArray.getString(i).split(",");
                     lat = Double.parseDouble(loc[0].substring(1, loc[0].length()));
                     lng = Double.parseDouble(loc[1].substring(0, loc[1].length() - 1));
                     mLocation = new LatLng(lat, lng);
-                    // Geocode lat/lon and add to dictionary
                     mTravelerLocations.put(mLocation, "Pickup location");
                 }
 
@@ -1190,7 +1183,7 @@ public class TravelPlannerActivity extends ListFragment implements
     }
 
     /**
-     * Store geocoded location in map
+     * Store geocoded location in locations/address map
      * @param location lat/lng
      * @param responseData response from Goecoding API
      */
