@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nicholasgot.citypulse.androidapp"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -22,16 +22,18 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ericsson_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.nicholasgot.citypulse.androidapp.MainActivity"
-            >
-            <!--android:icon="@drawable/ericsson_logo"-->
-            <!--android:label="" >-->
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+
+            <!-- android:icon="@drawable/ericsson_logo" -->
+            <!-- android:label="" > -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,60 +41,59 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.ParkingPlaceConstraintsActivity"
+            android:name=".ParkingPlaceConstraintsActivity"
             android:icon="@drawable/ericsson_logo"
             android:label=""
-            android:parentActivityName="com.nicholasgot.citypulse.androidapp.MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nicholasgot.citypulse.androidapp.MainActivity" />
         </activity>
 
+        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity"/>
+
         <!-- developer -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDwPt-0G1Q8w2Y9Vysd-1KY2qxAhqno5ys" />
-        
+
         <!-- release -->
-        <!--meta-data
+        <!--
+            meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value=" AIzaSyBZrdk5KJXqWEFJgi3g9PD9-59aGVXBIWk" /-->
-          
+            android:value=" AIzaSyBZrdk5KJXqWEFJgi3g9PD9-59aGVXBIWk" /
+        -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.TravelPlannerConstraintsActivity"
+            android:name=".TravelPlannerConstraintsActivity"
             android:icon="@drawable/project_icon"
-            android:label="" >
-        </activity>
-        
+            android:label=""></activity>
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.ErrorPanel"
+            android:name=".ErrorPanel"
             android:icon="@drawable/project_icon"
-            android:label="" >
-        </activity>
+            android:label=""></activity>
 
-        <service android:name="com.nicholasgot.citypulse.androidapp.ParkingNotificationService" />
-        <service android:name="com.nicholasgot.citypulse.androidapp.TravelNotificationService" />
-         <service android:name="com.nicholasgot.citypulse.androidapp.TravelStatusService" />
+        <service android:name=".ParkingNotificationService" />
+        <service android:name=".TravelNotificationService" />
+        <service android:name=".TravelStatusService" />
 
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.TravelPlannerRouteSelection"
+            android:name=".TravelPlannerRouteSelection"
             android:icon="@drawable/project_icon"
-            android:label="" >
-        </activity>
+            android:label=""></activity>
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.Execution"
+            android:name=".Execution"
             android:icon="@drawable/project_icon"
-            android:label="" >
-        </activity>
+            android:label=""></activity>
         <activity
-            android:name="com.nicholasgot.citypulse.androidapp.ParkingPlaceSelectionActivity"
+            android:name=".ParkingPlaceSelectionActivity"
             android:icon="@drawable/project_icon"
-            android:label="" >
-        </activity>
+            android:label=""></activity>
     </application>
 
 </manifest>

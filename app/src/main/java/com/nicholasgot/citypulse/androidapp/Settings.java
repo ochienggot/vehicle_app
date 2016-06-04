@@ -267,11 +267,9 @@ public class Settings extends Fragment {
 				settingsEditor.putString("serverLocation", serverLocationTextField.getText().toString());
 
 				settingsEditor.commit();
-
 			}
 		});
 
 		return settings;
-
 	}
 }

@@ -31,6 +31,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.text.Editable;
@@ -142,6 +143,9 @@ public class TravelPlannerActivity extends ListFragment implements
     private static Map<LatLng, String> mTravelerLocations = new Hashtable<>();
     private static ArrayList<String> pickupPoints = new ArrayList<>();
     private static LatLng mLocation;
+    private static ArrayList<LatLng> mLatLon = new ArrayList<>(); // locations lat/lon, for ordering
+
+    private int mNextIndex;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -150,6 +154,8 @@ public class TravelPlannerActivity extends ListFragment implements
         // TODO: activity lifecycle
         mDb = new DatabaseConnection();
 		mDb.getVehicleTrips();
+
+        mNextIndex = 0; // Star serving trip from the first pickup point
     }
 
 	@Override
@@ -171,15 +177,16 @@ public class TravelPlannerActivity extends ListFragment implements
             public void onClick(View v) {
                 pickupPoints.clear();
 
-                for (LatLng key : mTravelerLocations.keySet()) {
-                    pickupPoints.add(mTravelerLocations.get(key));
+                for (int index = 0; index < mLatLon.size(); index++) {
+                    pickupPoints.add(index, mTravelerLocations.get(mLatLon.get(index)));
                 }
 
                 itemsAdapter.notifyDataSetChanged();
                 final ListView listView = getListView();
                 listView.setVisibility(View.VISIBLE);
 
-                mNextPickupPoint.setText(pickupPoints.get(0));
+                // Third element in array
+                mNextPickupPoint.setText(pickupPoints.get(mNextIndex));
             }
         });
 
@@ -190,7 +197,7 @@ public class TravelPlannerActivity extends ListFragment implements
             @Override
             public void onClick(View v) {
                 mFromDriver = true;
-                endPointTextField.setText(R.string.next_pickup_location);
+                endPointTextField.setText(mNextPickupPoint.getText());
                 String location = (String) mNextPickupPoint.getText();
                 displayMarkerAtLocationAndZoomIn(getLocationFromString(location));
 
@@ -257,7 +264,6 @@ public class TravelPlannerActivity extends ListFragment implements
 			}
 		});
 
-		// TODO: change how geocoding is done
 		endPointTextField = (AutoCompleteTextView) travelPlannerView
 				.findViewById(R.id.travelPlannerEndPointTextField);
 
@@ -454,7 +460,6 @@ public class TravelPlannerActivity extends ListFragment implements
 							travelPlannerSupportMapFragment).commit();
 		}
 
-
         // ADDED: Zoom into clicked location
         final ListView listView = getListView();
         listView.setVisibility(View.INVISIBLE);
@@ -462,7 +467,7 @@ public class TravelPlannerActivity extends ListFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) listView.getItemAtPosition(position);
-                Toast.makeText(getContext(), "Selected: " + item , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), item , Toast.LENGTH_SHORT).show();
                 displayMarkerAtLocationAndZoomIn(getLocationFromString(item));
             }
         });
@@ -485,6 +490,8 @@ public class TravelPlannerActivity extends ListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+
+        pickupPoints.clear();
 
 		locationAvailable = false;
 
@@ -559,6 +566,11 @@ public class TravelPlannerActivity extends ListFragment implements
 		SharedPreferences routeConstraintsPreferences = getActivity()
 				.getSharedPreferences("RouteConstraintsPreferences",
 						getActivity().MODE_PRIVATE);
+
+        // TODO: find how best to use shared preferences
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String pref1 = sharedPref.getString("pref_security_level", "7");
+
 		final Editor routeConstraintsEditor = routeConstraintsPreferences
 				.edit();
 
@@ -603,7 +615,6 @@ public class TravelPlannerActivity extends ListFragment implements
 		Gson gson = builder.create();
 
 		return gson.toJson(reasoningRequest);
-
 	}
 
     // TODO: change from Async to OKHTTP?
@@ -724,11 +735,12 @@ public class TravelPlannerActivity extends ListFragment implements
 					.icon(BitmapDescriptorFactory
 							.fromResource(R.drawable.user_position_marker)));
 
-            // ADDED: set text in next location to visit
             // TODO: When location changes, check the distance between the current user position and the next location
             // TODO: If it exceeds some threshold, change the next location to visit
-            // TODO: Monitor last location position in the Waypoints array
-            // TODO: Present the possibility of going from current location to the next bus stop, then choosing path
+//            Log.v(LOG_TAG, "Location index on location change: " + mNextIndex);
+
+			// TODO: load map of Sweden instead of the world
+            // TODO: migrate settings tab - done
             String nextLocation = 0.0 + "/" + 0.0; // Placeholder
             mNextPickupPoint.setText(nextLocation);
 
@@ -740,8 +752,11 @@ public class TravelPlannerActivity extends ListFragment implements
 
 		} else {
 			userPositionMarker.setPosition(latLng);
-		}
 
+            // TODO: Monitor last location position in the Waypoints array
+            findNextPickupPoint();
+            Log.v(LOG_TAG, "Location index on location change: " + mNextIndex);
+		}
 		locationAvailable = true;
 	}
 
@@ -1153,6 +1168,7 @@ public class TravelPlannerActivity extends ListFragment implements
      * @param responseData from the REST server API
      */
     public static void getLocationFromJson(String responseData) {
+
         try {
             JSONObject jsonObject = new JSONObject(responseData);
             JSONArray jsonArray1 = jsonObject.getJSONArray("vehicle_trips");
@@ -1167,12 +1183,9 @@ public class TravelPlannerActivity extends ListFragment implements
                     lat = Double.parseDouble(loc[0].substring(1, loc[0].length()));
                     lng = Double.parseDouble(loc[1].substring(0, loc[1].length() - 1));
                     mLocation = new LatLng(lat, lng);
-                    mTravelerLocations.put(mLocation, "Pickup location");
-                }
+                    mLatLon.add(mLocation);
 
-                // Geocode locations
-                for (LatLng key : mTravelerLocations.keySet()) {
-                    GeocodeLocationTask geocodeTask = new GeocodeLocationTask(key);
+                    GeocodeLocationTask geocodeTask = new GeocodeLocationTask(mLocation);
                     geocodeTask.doInBackground();
                 }
             }
@@ -1199,11 +1212,50 @@ public class TravelPlannerActivity extends ListFragment implements
             String address = jsonObject1.getString(FORMATTED_ADDRESS);
 
             // Update the addresses in locations map
-            mTravelerLocations.put(location,
-                    address.substring(0, address.length() - LEN_COUNTRY));
+            String locationAddress = address.substring(0, address.length() - LEN_COUNTRY);
+            mTravelerLocations.put(location, locationAddress);
+
+            // place in pickup points array too
+//            pickupPoints.add(locationAddress);
+//            Log.v(LOG_TAG, "Adding..." + locationAddress);
 
         } catch (JSONException je) {
             Log.e(LOG_TAG, "Json exception: " + je);
+        }
+    }
+
+    /**
+     * Advances the next pickup index depending if the distance between the current location and the next location
+     * is less than 10 m (value arbitrarily chosen)
+     */
+    private void findNextPickupPoint() {
+        String currentPickupPoint = (String) mNextPickupPoint.getText();
+        String nextPickupPoint = pickupPoints.get(mNextIndex + 1);
+        LatLng currPoint = getLocationFromString(currentPickupPoint);
+        LatLng nextPoint = getLocationFromString(nextPickupPoint);
+
+        Location currLocation = new Location("");
+        if (currPoint != null) {
+            currLocation.setLatitude(currPoint.latitude);
+            currLocation.setLatitude(currPoint.longitude);
+        }
+        else {
+            Log.e(LOG_TAG, "Null currPoint");
+        }
+
+        Location nextLocation = new Location("");
+        if (nextPoint != null) {
+            nextLocation.setLatitude(nextPoint.latitude);
+            nextLocation.setLatitude(nextPoint.longitude);
+        }
+        else {
+            Log.e(LOG_TAG, "Null nextPoint");
+        }
+
+        float distance = currLocation.distanceTo(nextLocation);
+        if (distance < 10) {
+            // Next pickup point is the next item in the pickup array
+            mNextIndex++;
         }
     }
 }

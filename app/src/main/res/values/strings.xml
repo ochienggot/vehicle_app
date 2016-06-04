@@ -32,5 +32,14 @@
     <string name="next_pickup_point">Next pickup point: </string>
     <string name="next_pickup_location">Next pickup location</string>
     <string name="pickup_locations">Load pickup points</string>
+    <string name="pref_latency">Latency (ms)</string>
+    <string name="pref_price">Price (euro)</string>
+    <string name="pref_security_level">Security level</string>
+    <string name="pref_accuracy">Accuracy %</string>
+    <string name="pref_completeness">Completeness %</string>
+    <string name="pref_bandwidth">Bandwidth (msg/s)</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

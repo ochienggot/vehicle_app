@@ -14,11 +14,11 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
   public Fragment getItem(int i) {
     switch (i) {
         case 0:
+            //Fragment for Route Tab
+            return new TravelPlannerActivity();
+        case 1:
             //Fragment for Parking Place Tab
             return new ParkingPlacePlannerActivity();
-        case 1:
-           //Fragment for Route Tab
-            return new TravelPlannerActivity();
         case 2:
             //Fragment for Settings Tab
             return new Settings();
@@ -32,5 +32,4 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     // TODO Auto-generated method stub
     return 3; //No of Tabs
   }
- 
-    }
+}

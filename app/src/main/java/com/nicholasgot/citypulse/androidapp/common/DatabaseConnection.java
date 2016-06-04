@@ -23,8 +23,9 @@ import okhttp3.Response;
  * Connect to the database through web server
  */
 public class DatabaseConnection {
-//    public static final String LOCAL_HOST = "http://213.159.185.35:5000"; // work
-    public static final String LOCAL_HOST = "http://192.168.1.6:5000";
+//    public static final String LOCAL_HOST = "http://213.159.185.35:5000"; // work network
+    public static final String LOCAL_HOST = "http://192.168.1.6:5000"; // home network
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String LOG_TAG = DatabaseConnection.class.getSimpleName();
 

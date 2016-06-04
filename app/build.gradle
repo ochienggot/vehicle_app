@@ -40,11 +40,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.google.android.gms:play-services-maps:9.0.0'
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile files('libs/commons-0.0.1-SNAPSHOT.jar')
     compile files('libs/grizzly-framework-2.3.15-gfa.jar')
     compile files('libs/grizzly-http-2.3.15-gfa.jar')
@@ -61,4 +56,9 @@ dependencies {
     compile files('libs/tyrus-spi-1.10.jar')
     compile files('libs/tyrus-websocket-core-1.0.jar')
     compile project(':embasp')
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.android.gms:play-services-maps:9.0.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 }

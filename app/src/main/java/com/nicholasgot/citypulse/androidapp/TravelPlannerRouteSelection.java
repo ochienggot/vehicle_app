@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 import citypulse.commons.contextual_filtering.contextual_event_request.ContextualEventRequest;
 import citypulse.commons.contextual_filtering.contextual_event_request.FilteringFactor;
@@ -82,9 +84,6 @@ public class TravelPlannerRouteSelection extends Activity implements
 		routeReasoningRequest = executionBundle
 				.getString(Execution.DECISION_SUPPORT_TRAVEL_PLANNER_REQUEST);
 
-        Log.v(LOG_TAG, "Reasoning response: " + routeReasoningResponse);
-        Log.v(LOG_TAG, "Reasoning request: " + routeReasoningRequest);
-
 		startingPoint = new Gson().fromJson(
 				executionBundle.getString(Execution.STARTING_POINT),
 				LatLng.class);
@@ -121,7 +120,7 @@ public class TravelPlannerRouteSelection extends Activity implements
 				} else {
 
 					System.out
-							.println("Star the ROUTE_CONTEXTUAL_EVENT_REQUESTS creation");
+							.println("Start the ROUTE_CONTEXTUAL_EVENT_REQUESTS creation");
 
 					Answer selectedAnswer = answersHashMap
 							.get(selectedRouteNumber);
